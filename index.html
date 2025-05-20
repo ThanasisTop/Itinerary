@@ -2,6 +2,8 @@
 <html lang="en" ng-app="miniApp">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,
+                                   initial-scale=1.0">
   <title>Itineraries</title>
   <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,43 +16,43 @@
     <h1 class="mb-4" data-ng-if="vm.Entity.Id">Επεξεργασία Δρομολογίου</h1>
 
     <form class="input-group mb-3" ng-submit="vm.addItinerary(vm.Entity)">
-    	<div class="col-sm-12">
-    		<div class="row">
-    			<div class="col-sm-6">
-    				<label>Αριθμός Δρομολογίου</label>
-    				<input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="vm.Entity.TripNumber">
-    			</div>
-    			<div class="col-sm-6">
-    				<label>Ημερομηνία</label>
-    				<input type="text" class="form-control" placeholder="DD/MM/YYYY" 
-    				ng-model="vm.Entity.TripDate"
-    				ng-pattern="/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/">
-    			</div>
-    		</div>
-    		<div class="row">
-    			<div class="col-sm-6">
-    				<label>Ποσό</label>
-    				<input type="number" step=".01" class="form-control" placeholder="Ποσό" ng-model="vm.Entity.Amount">
-    			</div>
-    			<div class="col-sm-6">
-    				<label>Τύπος Αυτοκινήτου</label>
-    				<select class="form-select"
-        				data-ng-model="vm.Entity.CarTypeCode"
-        				data-ng-options="type.Code as type.Description for type in vm.CarTypes"
-        				aria-label="Τύπος Αυτοκινήτου">
-  						<option value=""></option>
-					</select>
-    			</div>
-    		</div>
-    		<div class="row">
-    			<div class="col-sm-6">
-    				<label>Τύπος Δρομολογίου</label>
-    				<select class="form-select"
-        				data-ng-model="vm.Entity.ItineraryTypeCode"
-        				data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
-        				aria-label="Τύπος Δρομολογίου">
-					</select>
-    			</div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Αριθμός Δρομολογίου</label>
+                    <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="vm.Entity.TripNumber">
+                </div>
+                <div class="col-sm-6">
+                    <label>Ημερομηνία</label>
+                    <input type="text" class="form-control" placeholder="DD/MM/YYYY" 
+                    ng-model="vm.Entity.TripDate"
+                    ng-pattern="/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Ποσό</label>
+                    <input type="number" step=".01" class="form-control" placeholder="Ποσό" ng-model="vm.Entity.Amount">
+                </div>
+                <div class="col-sm-6">
+                    <label>Τύπος Αυτοκινήτου</label>
+                    <select class="form-select"
+                        data-ng-model="vm.Entity.CarTypeCode"
+                        data-ng-options="type.Code as type.Description for type in vm.CarTypes"
+                        aria-label="Τύπος Αυτοκινήτου">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Τύπος Δρομολογίου</label>
+                    <select class="form-select"
+                        data-ng-model="vm.Entity.ItineraryTypeCode"
+                        data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                        aria-label="Τύπος Δρομολογίου">
+                    </select>
+                </div>
           <div class="col-sm-6">
             <label>Πληρωμή</label>
             <select class="form-select"
@@ -59,21 +61,21 @@
                 aria-label="Ναι/Οχι">
           </select>
           </div>
-    			<div class="col-sm-12">
-    				<label>Σχόλια</label>
-    				<input type="text" class="form-control" placeholder="Σχόλια" ng-model="vm.Entity.Comments">
-    			</div>
-    		</div>
-    	</div>
-    	<div class="btn-group-sm pt-2">
-    		<button class="btn btn-primary" type="submit">Αποθήκευση</button>
+                <div class="col-sm-12">
+                    <label>Σχόλια</label>
+                    <input type="text" class="form-control" placeholder="Σχόλια" ng-model="vm.Entity.Comments">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group-sm pt-2">
+            <button class="btn btn-primary" type="submit">Αποθήκευση</button>
         <button class="btn btn-danger" ng-click="vm.cancel()" ng-if="vm.Entity.Id">Ακύρωση</button>
-    	</div>
+        </div>
     </form>
     <hr>
     <div>
-    	<h1 class="mb-4">Φίλτρα</h1>
-    	<div class="col-sm-12">
+        <h1 class="mb-4">Φίλτρα</h1>
+        <div class="col-sm-12">
         <div class="row">
           <div class="col-sm-4">
             <label>Τύπος Δρομολογίου</label>
@@ -102,41 +104,41 @@
       </div>
       <hr>
       <h1 class="mb-4" ng-if="vm.Itineraries.length>0">Όλα τα Δρομολόγια</h1>
-    	<table class="table" ng-if="vm.Itineraries.length>0">
-  	  	<thead>
-    		<tr>
-      			<th scope="col">ID</th>
-      			<th scope="col">Τύπος Δρομολογίου</th>
-      			<th scope="col">Αριθμός Δρομολογίου</th>
-      			<th scope="col">Ημερομηνία</th>
-      			<th scope="col">Ποσό</th>
+        <table class="table" ng-if="vm.Itineraries.length>0">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Τύπος Δρομολογίου</th>
+                <th scope="col">Αριθμός Δρομολογίου</th>
+                <th scope="col">Ημερομηνία</th>
+                <th scope="col">Ποσό</th>
             <th scope="col">Πληρωμή</th>
-      			<th scope="col">Ενέργειες</th>
-    		</tr>
-  	  	</thead>
-  	  	<tbody>
-    	  <tr ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
-      		<th scope="row">{{itinerary.Id}}</th>
-      		<td>
+                <th scope="col">Ενέργειες</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
+            <th>{{itinerary.Id}}</th>
+            <td>
             <select class="form-select"
-    					data-ng-model="itinerary.ItineraryTypeCode"
-        				data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
-        				disabled>
-					  </select>
+                        data-ng-model="itinerary.ItineraryTypeCode"
+                        data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                        disabled>
+                      </select>
           </td>
-      		<td>{{itinerary.TripNumber}}</td>
-      		<td>{{itinerary.TripDate}}</td>
-      		<td ng-style="{'color': itinerary.AmountIsPaid=='1' ? 'green' : 'red'}">{{itinerary.Amount|currency: "€"}}</td>
+            <td>{{itinerary.TripNumber}}</td>
+            <td>{{itinerary.TripDate}}</td>
+            <td ng-style="{'color': itinerary.AmountIsPaid=='1' ? 'green' : 'red'}">{{itinerary.Amount|currency: "€"}}</td>
           <td><select class="form-select"
               data-ng-model="itinerary.AmountIsPaid"
                 data-ng-options="type.Code as type.Description for type in vm.YesNo"
                 disabled>
             </select></td>
-      		<td>
-      			<button class="btn btn-sm btn-danger" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
-        		<button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
-      		</td>
-    	  </tr>
+            <td>
+                <button class="btn btn-sm btn-danger" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
+                <button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
+            </td>
+          </tr>
         <tr>
           <th scope="row">Σύνολο</th>
           <td></td>
@@ -146,7 +148,7 @@
           <td></td>
           <td></td>
         </tr>
-  	  </tbody>
+      </tbody>
     </table>
     </div>
   </div>
