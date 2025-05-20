@@ -107,7 +107,6 @@
         <table class="table" ng-if="vm.Itineraries.length>0">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Τύπος Δρομολογίου</th>
                 <th scope="col">Αριθμός Δρομολογίου</th>
                 <th scope="col">Ημερομηνία</th>
@@ -118,7 +117,6 @@
         </thead>
         <tbody>
           <tr ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
-            <th>{{itinerary.Id}}</th>
             <td>
             <select class="form-select"
                         data-ng-model="itinerary.ItineraryTypeCode"
@@ -135,8 +133,15 @@
                 disabled>
             </select></td>
             <td>
-                <button class="btn btn-sm btn-danger" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
-                <button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
+                <div class="row">
+                    <div class="col-sm-6 p-1">
+                        <button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
+                    </div>
+                    <div class="col-sm-6 p-1">
+                        <button class="btn btn-sm btn-danger pt" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
+                    </div>
+                </div>
+                
             </td>
           </tr>
         <tr>
