@@ -314,6 +314,19 @@
                         </tr>
                      </tbody>
                   </table>
+                  <ol class="list-group list-group pt-5 d-block d-md-none">
+                     <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="driver in filteredDrivers = (vm.Drivers | filter:search)">
+                        <div class="ms-2 me-auto">
+                           <div>{{driver.FirstName}} {{driver.LastName}}</div>
+                           <div class="row">
+                              <div class="col-sm-12 p-1">
+                                 <button class="btn btn-sm btn-primary" ng-click="vm.editDriver(driver)">Επεξεργασία</button>
+                                 <button class="btn btn-sm btn-danger pt" ng-click="vm.removeDriver(driver.Id)">Διαγραφή</button>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                  </ol>
                </div>
                <div ng-switch-when="profile">
                   <h2>Το Προφίλ μου</h2>
