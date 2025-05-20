@@ -1,169 +1,301 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="miniApp">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,
-                                   initial-scale=1.0">
-  <title>Itineraries</title>
-  <!-- Bootstrap 5 CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Optional custom styles -->
-  <link rel="stylesheet" href="./style.css">
-</head>
-<body ng-controller="ItineraryController as vm">
-  <div class="container mt-5">
-    <h1 class="mb-4" data-ng-if="!vm.Entity.Id">Προσθήκη Δρομολογίου</h1>
-    <h1 class="mb-4" data-ng-if="vm.Entity.Id">Επεξεργασία Δρομολογίου</h1>
-
-    <form class="input-group mb-3" ng-submit="vm.addItinerary(vm.Entity)">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-6">
-                    <label>Αριθμός Δρομολογίου</label>
-                    <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="vm.Entity.TripNumber">
-                </div>
-                <div class="col-sm-6">
-                    <label>Ημερομηνία</label>
-                    <input type="text" class="form-control" placeholder="DD/MM/YYYY" 
-                    ng-model="vm.Entity.TripDate"
-                    ng-pattern="/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/">
-                </div>
+<html lang="en" ng-app="myApp">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Dashboard</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+      <link rel="stylesheet" href="./style.css">
+   </head>
+   <body ng-controller="DashboardController as vm">
+      <div>
+         <nav class="sidebar d-flex flex-column flex-shrink-0 position-fixed">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="p-4">
+               <h4 class="logo-text fw-bold mb-0">CreteAirportTaxi</h4>
+               <p class="text-muted small hide-on-collapse">Dashboard</p>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <label>Ποσό</label>
-                    <input type="number" step=".01" class="form-control" placeholder="Ποσό" ng-model="vm.Entity.Amount">
-                </div>
-                <div class="col-sm-6">
-                    <label>Τύπος Αυτοκινήτου</label>
-                    <select class="form-select"
-                        data-ng-model="vm.Entity.CarTypeCode"
-                        data-ng-options="type.Code as type.Description for type in vm.CarTypes"
-                        aria-label="Τύπος Αυτοκινήτου">
-                        <option value=""></option>
-                    </select>
-                </div>
+            <div class="nav flex-column" ng-repeat="item in vm.Menu">
+               <a href="#" class="sidebar-link active text-decoration-none p-3" ng-click="vm.setPage(item.Path)">
+               <i ng-class="{'fas':true, 
+                  '{{item.Icon}}':true,
+                  'me-3':true}"></i>
+               <span class="hide-on-collapse">{{item.Title}}</span>
+               </a>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <label>Τύπος Δρομολογίου</label>
-                    <select class="form-select"
-                        data-ng-model="vm.Entity.ItineraryTypeCode"
-                        data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
-                        aria-label="Τύπος Δρομολογίου">
-                    </select>
-                </div>
-          <div class="col-sm-6">
-            <label>Πληρωμή</label>
-            <select class="form-select"
-                data-ng-model="vm.Entity.AmountIsPaid"
-                data-ng-options="type.Code as type.Description for type in vm.YesNo"
-                aria-label="Ναι/Οχι">
-          </select>
-          </div>
-                <div class="col-sm-12">
-                    <label>Σχόλια</label>
-                    <textarea type="text" class="form-control" rows="4" placeholder="Σχόλια" ng-model="vm.Entity.Comments"></textarea>
-                </div>
+            <div class="profile-section mt-auto p-4">
+               <div class="d-flex align-items-center">
+                  <img src="https://creteairporttaxi.de/wp-content/uploads/2025/02/logo-white-300x146.png" style="height:60px; width: 60px; object-fit: cover;" class="rounded-circle" alt="Profile">
+                  <div class="ms-3 profile-info">
+                     <h6 class="text-white mb-0">CreteAirportTaxi</h6>
+                     <small class="text-white">Admin</small>
+                  </div>
+               </div>
             </div>
-        </div>
-        <div class="btn-group-sm pt-2">
-            <button class="btn btn-primary" type="submit">Αποθήκευση</button>
-        <button class="btn btn-danger" ng-click="vm.cancel()" ng-if="vm.Entity.Id">Ακύρωση</button>
-        </div>
-    </form>
-    <hr>
-    <div>
-        <h1 class="mb-4">Φίλτρα</h1>
-        <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-4">
-            <label>Τύπος Δρομολογίου</label>
-            <select class="form-select"
-              data-ng-model="search.ItineraryTypeCode"
-                data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
-                aria-label="Τύπος Δρομολογίου">
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <label>Πληρωμή</label>
-            <select class="form-select"
-              data-ng-model="search.AmountIsPaid"
-                data-ng-options="type.Code as type.Description for type in vm.YesNo"
-                aria-label="Εγινε Πληρωμή">
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <label>Αριθμός Δρομολογίου</label>
-            <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="search.TripNumber">
-          </div>
-        </div>
+         </nav>
+         <main class="main-content">
+            <div class="container pt-2" ng-switch="vm.currentPage">
+               <div ng-switch-when="dashboard">
+                  <h2>Welcome to NexusFlow</h2>
+                  <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+               </div>
+               <div ng-switch-when="my-itineraries" ng-controller="ItinerariesController as vm">
+                  <h2>Τα Δρομολόγιά μου</h2>
+                  <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+                  <div ng-if="vm.Entity.Id">
+                     <form class="input-group mb-3" ng-submit="vm.addItinerary(vm.Entity)">
+                        <div class="col-sm-12">
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <label>Αριθμός Δρομολογίου</label>
+                                 <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="vm.Entity.TripNumber">
+                              </div>
+                              <div class="col-sm-6">
+                                 <label>Ημερομηνία</label>
+                                 <input type="text" class="form-control" placeholder="DD/MM/YYYY" 
+                                    ng-model="vm.Entity.TripDate"
+                                    ng-pattern="/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/">
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <label>Ποσό</label>
+                                 <input type="number" step=".01" class="form-control" placeholder="Ποσό" ng-model="vm.Entity.Amount">
+                              </div>
+                              <div class="col-sm-6">
+                                 <label>Τύπος Αυτοκινήτου</label>
+                                 <select class="form-select"
+                                    data-ng-model="vm.Entity.CarTypeCode"
+                                    data-ng-options="type.Code as type.Description for type in vm.CarTypes"
+                                    aria-label="Τύπος Αυτοκινήτου">
+                                    <option value=""></option>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <label>Τύπος Δρομολογίου</label>
+                                 <select class="form-select"
+                                    data-ng-model="vm.Entity.ItineraryTypeCode"
+                                    data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                                    aria-label="Τύπος Δρομολογίου">
+                                 </select>
+                              </div>
+                              <div class="col-sm-6">
+                                 <label>Πληρωμή</label>
+                                 <select class="form-select"
+                                    data-ng-model="vm.Entity.AmountIsPaid"
+                                    data-ng-options="type.Code as type.Description for type in vm.YesNo"
+                                    aria-label="Ναι/Οχι">
+                                 </select>
+                              </div>
+                              <div class="col-sm-12">
+                                 <label>Σχόλια</label>
+                                 <textarea type="text" class="form-control" rows="4" placeholder="Σχόλια" ng-model="vm.Entity.Comments"></textarea>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="btn-group-sm pt-2">
+                           <button class="btn btn-primary" type="submit">Αποθήκευση</button>
+                           <button class="btn btn-danger" ng-click="vm.cancel()" ng-if="vm.Entity.Id">Ακύρωση</button>
+                        </div>
+                     </form>
+                  </div>
+                  <div>
+                     <div class="col-sm-12">
+                        <div class="row">
+                           <div class="col-sm-4">
+                              <label>Τύπος Δρομολογίου</label>
+                              <select class="form-select"
+                                 data-ng-model="search.ItineraryTypeCode"
+                                 data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                                 aria-label="Τύπος Δρομολογίου">
+                              </select>
+                           </div>
+                           <div class="col-sm-4">
+                              <label>Πληρωμή</label>
+                              <select class="form-select"
+                                 data-ng-model="search.AmountIsPaid"
+                                 data-ng-options="type.Code as type.Description for type in vm.YesNo"
+                                 aria-label="Εγινε Πληρωμή">
+                              </select>
+                           </div>
+                           <div class="col-sm-4">
+                              <label>Αριθμός Δρομολογίου</label>
+                              <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="search.TripNumber">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="btn-group-sm pt-2">
+                        <button class="btn btn-primary" ng-click="vm.clearFilter(search)">Καθαρισμός</button>
+                     </div>
+                  </div>
+                  <table class="table d-none d-md-table pt-2">
+                     <thead>
+                        <tr>
+                           <th scope="col">Τύπος Δρομολογίου</th>
+                           <th scope="col">Αριθμός Δρομολογίου</th>
+                           <th scope="col">Ημερομηνία</th>
+                           <th scope="col">Ποσό</th>
+                           <th scope="col">Πληρωμή</th>
+                           <th scope="col">Ενέργειες</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
+                           <td>
+                              <select class="form-select"
+                                 data-ng-model="itinerary.ItineraryTypeCode"
+                                 data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                                 disabled>
+                              </select>
+                           </td>
+                           <td>{{itinerary.TripNumber}}</td>
+                           <td>{{itinerary.TripDate}}</td>
+                           <td ng-style="{'color': itinerary.AmountIsPaid=='1' ? 'green' : 'red'}">{{itinerary.Amount|currency: "€"}}</td>
+                           <td><select class="form-select"
+                              data-ng-model="itinerary.AmountIsPaid"
+                              data-ng-options="type.Code as type.Description for type in vm.YesNo"
+                              disabled>
+                              </select>
+                           </td>
+                           <td>
+                              <div class="row">
+                                 <div class="col-sm-6 p-1">
+                                    <button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
+                                 </div>
+                                 <div class="col-sm-6 p-1">
+                                    <button class="btn btn-sm btn-danger pt" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row">Σύνολο</th>
+                           <td></td>
+                           <td></td>
+                           <td ng-style="{'color': search.AmountIsPaid=='1' ? 'green' : 'black'}">{{vm.getTotal(filteredItineraries)|currency: "€"}}</td>
+                           <td></td>
+                           <td></td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <ol class="list-group list-group pt-5 d-block d-md-none">
+                     <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
+                        <div class="ms-2 me-auto">
+                           <div class="fw-bold">{{itinerary.TripNumber}}</div>
+                           <div>Ημερομηνία: {{itinerary.TripDate}}</div>
+                           <div>Ποσό: {{itinerary.Amount|currency: "€"}}</div>
+                           <div>Πληρωμή: {{itinerary.AmountIsPaid=='1'?'Ναι':'Όχι'}}</div>
+                           <div>Σχόλια: {{itinerary.Comments}}</div>
+                           <div class="row">
+                              <div class="col-sm-12 p-1">
+                                 <button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
+                                 <button class="btn btn-sm btn-danger pt" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                  </ol>
+                  <div ng-show="vm.showSpinner" class="d-flex justify-content-center">
+                     <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                     </div>
+                  </div>
+               </div>
+               <div ng-switch-when="add-itinerary" ng-controller="ItinerariesController as vm">
+                  <h2>Προσθήκη Δρομολογίου</h2>
+                  <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+                  <form class="input-group mb-3" ng-submit="vm.addItinerary(vm.Entity)">
+                     <div class="col-sm-12">
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <label>Αριθμός Δρομολογίου</label>
+                              <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="vm.Entity.TripNumber">
+                           </div>
+                           <div class="col-sm-6">
+                              <label>Ημερομηνία</label>
+                              <input type="text" class="form-control" placeholder="DD/MM/YYYY" 
+                                 ng-model="vm.Entity.TripDate"
+                                 ng-pattern="/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/">
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <label>Ποσό</label>
+                              <input type="number" step=".01" class="form-control" placeholder="Ποσό" ng-model="vm.Entity.Amount">
+                           </div>
+                           <div class="col-sm-6">
+                              <label>Τύπος Αυτοκινήτου</label>
+                              <select class="form-select"
+                                 data-ng-model="vm.Entity.CarTypeCode"
+                                 data-ng-options="type.Code as type.Description for type in vm.CarTypes"
+                                 aria-label="Τύπος Αυτοκινήτου">
+                                 <option value=""></option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <label>Τύπος Δρομολογίου</label>
+                              <select class="form-select"
+                                 data-ng-model="vm.Entity.ItineraryTypeCode"
+                                 data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                                 aria-label="Τύπος Δρομολογίου">
+                              </select>
+                           </div>
+                           <div class="col-sm-6">
+                              <label>Πληρωμή</label>
+                              <select class="form-select"
+                                 data-ng-model="vm.Entity.AmountIsPaid"
+                                 data-ng-options="type.Code as type.Description for type in vm.YesNo"
+                                 aria-label="Ναι/Οχι">
+                              </select>
+                           </div>
+                           <div class="col-sm-12">
+                              <label>Σχόλια</label>
+                              <textarea type="text" class="form-control" rows="4" placeholder="Σχόλια" ng-model="vm.Entity.Comments"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="btn-group-sm pt-2">
+                        <button class="btn btn-primary" type="submit">Αποθήκευση</button>
+                        <button class="btn btn-danger" ng-click="vm.cancel()" ng-if="vm.Entity.Id">Ακύρωση</button>
+                     </div>
+                  </form>
+               </div>
+               <div ng-switch-when="calendar">
+                  <h2>Ημερολόγιο</h2>
+                  <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+               </div>
+               <div ng-switch-when="drivers">
+                  <h2>Οδηγοί</h2>
+                  <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+               </div>
+               <div ng-switch-when="profile">
+                  <h2>Το Προφίλ μου</h2>
+                  <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+               </div>
+            </div>
+         </main>
+         <script>
+            function toggleSidebar() {
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.classList.toggle('collapsed');
+            }
+         </script>
       </div>
-      <div class="btn-group-sm pt-2">
-        <button class="btn btn-primary" ng-click="vm.clearFilter(search)">Καθαρισμός</button>
-      </div>
-      <hr>
-      <h1 class="mb-4" ng-if="vm.Itineraries.length>0">Όλα τα Δρομολόγια</h1>
-        <table class="table" ng-if="vm.Itineraries.length>0">
-        <thead>
-            <tr>
-                <th scope="col">Τύπος Δρομολογίου</th>
-                <th scope="col">Αριθμός Δρομολογίου</th>
-                <th scope="col">Ημερομηνία</th>
-                <th scope="col">Ποσό</th>
-            <th scope="col">Πληρωμή</th>
-                <th scope="col">Ενέργειες</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
-            <td>
-            <select class="form-select"
-                        data-ng-model="itinerary.ItineraryTypeCode"
-                        data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
-                        disabled>
-                      </select>
-          </td>
-            <td>{{itinerary.TripNumber}}</td>
-            <td>{{itinerary.TripDate}}</td>
-            <td ng-style="{'color': itinerary.AmountIsPaid=='1' ? 'green' : 'red'}">{{itinerary.Amount|currency: "€"}}</td>
-          <td><select class="form-select"
-              data-ng-model="itinerary.AmountIsPaid"
-                data-ng-options="type.Code as type.Description for type in vm.YesNo"
-                disabled>
-            </select></td>
-            <td>
-                <div class="row">
-                    <div class="col-sm-6 p-1">
-                        <button class="btn btn-sm btn-primary" ng-click="vm.editItinerary(itinerary)">Επεξεργασία</button>
-                    </div>
-                    <div class="col-sm-6 p-1">
-                        <button class="btn btn-sm btn-danger pt" ng-click="vm.removeItinerary(itinerary.Id)">Διαγραφή</button>
-                    </div>
-                </div>
-                
-            </td>
-          </tr>
-        <tr>
-          <th scope="row">Σύνολο</th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td ng-style="{'color': search.AmountIsPaid=='1' ? 'green' : 'black'}">{{vm.getTotal(filteredItineraries)|currency: "€"}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-  <!-- AngularJS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  <!-- App Script -->
-  <script src="app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-</body>
+      <!--Main layout-->
+      <!-- AngularJS -->
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+      <script src="app.js"></script>
+      <script src="DashboardController.js"></script>
+      <script src="ItinerariesController.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+   </body>
 </html>
