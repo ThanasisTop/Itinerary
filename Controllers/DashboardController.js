@@ -55,7 +55,7 @@ app.controller('DashboardController', function($scope,$location) {
 	vm.currentPage='dashboard';
 	vm.setPage=function(page){
 		vm.currentPage = page;
-		vm.toggleSidebar(false);
+		vm.toggleSidebar(true);
 	}
 	
 	
