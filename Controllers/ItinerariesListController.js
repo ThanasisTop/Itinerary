@@ -1,4 +1,4 @@
-app.controller('ItinerariesController', function($scope,$window) {
+app.controller('ItinerariesListController', function($scope,$window) {
     var vm=this;
     
 
@@ -86,7 +86,7 @@ app.controller('ItinerariesController', function($scope,$window) {
   };
   initializeData();
 
-  vm.addItinerary=function(entity){
+  vm.updateItinerary=function(entity){
       if(vm.hasEmptyField(entity)){
         alert('Παρακαλω συμπληρώστε όλα τα πεδία')
         return;
@@ -104,17 +104,10 @@ app.controller('ItinerariesController', function($scope,$window) {
         .catch(err => alert('Η επεξεργασία απέτυχε' + err.message));
         return;
       }
-
-      database.ref('Itineraries')
-              .push(entity)
-              .then(() => {
-                alert('Επιτυχής αποθήκευση')
-        initializeData()
-      },err => {
-                alert('Αποτυχία αποθήκευσης')
-                console.log(err)
-      })
-      return;
+	  else{
+		  return alert('Δεν υπαρχει το Δρομολόγιο')
+	  }
+      
       
   }
 

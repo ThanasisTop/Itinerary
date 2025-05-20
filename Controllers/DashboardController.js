@@ -2,7 +2,17 @@ app.controller('DashboardController', function($scope,$location) {
 
 
 	var vm=this;
-
+	
+	vm.toggleSidebar=function(collapse) {
+		
+        const sidebar = document.querySelector('.sidebar');
+		
+		if(collapse)
+			sidebar.classList.toggle('collapsed');
+        
+    }
+	vm.toggleSidebar(true);
+	
 	vm.Menu=[
 		{
 			Title:"Main Dashboard",
@@ -42,9 +52,12 @@ app.controller('DashboardController', function($scope,$location) {
 		}
 	
 	]
-	vm.currentPage=null;
+	vm.currentPage='dashboard';
 	vm.setPage=function(page){
 		vm.currentPage = page;
+		vm.toggleSidebar(false);
 	}
+	
+	
 })
     

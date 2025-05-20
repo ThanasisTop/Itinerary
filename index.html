@@ -11,7 +11,7 @@
    <body ng-controller="DashboardController as vm">
       <div>
          <nav class="sidebar d-flex flex-column flex-shrink-0 position-fixed">
-            <button class="toggle-btn" onclick="toggleSidebar()">
+            <button class="toggle-btn" ng-click="vm.toggleSidebar(true)">
             <i class="fas fa-chevron-left"></i>
             </button>
             <div class="p-4">
@@ -42,11 +42,11 @@
                   <h2>Welcome to NexusFlow</h2>
                   <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
                </div>
-               <div ng-switch-when="my-itineraries" ng-controller="ItinerariesController as vm">
+               <div ng-switch-when="my-itineraries" ng-controller="ItinerariesListController as vm">
                   <h2>Τα Δρομολόγιά μου</h2>
                   <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
                   <div ng-if="vm.Entity.Id">
-                     <form class="input-group mb-3" ng-submit="vm.addItinerary(vm.Entity)">
+                     <form class="input-group mb-3" ng-submit="vm.updateItinerary(vm.Entity)">
                         <div class="col-sm-12">
                            <div class="row">
                               <div class="col-sm-6">
@@ -206,7 +206,7 @@
                      </div>
                   </div>
                </div>
-               <div ng-switch-when="add-itinerary" ng-controller="ItinerariesController as vm">
+               <div ng-switch-when="add-itinerary" ng-controller="AddItineraryController as vm">
                   <h2>Προσθήκη Δρομολογίου</h2>
                   <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
                   <form class="input-group mb-3" ng-submit="vm.addItinerary(vm.Entity)">
@@ -271,9 +271,49 @@
                   <h2>Ημερολόγιο</h2>
                   <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
                </div>
-               <div ng-switch-when="drivers">
+               <div ng-switch-when="drivers" ng-controller="DriverController as vm">
                   <h2>Οδηγοί</h2>
                   <p class="text-muted">Streamline your workflow with our intuitive dashboard.</p>
+                  <form class="input-group mb-3" ng-submit="vm.save(vm.Entity)">
+                     <div class="col-sm-12">
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <label>Όνομα</label>
+                              <input type="text" class="form-control" placeholder="Όνομα" ng-model="vm.Entity.FirstName">
+                           </div>
+                           <div class="col-sm-6">
+                              <label>Επίθετο</label>
+                              <input type="text" class="form-control" placeholder="Επίθετο" ng-model="vm.Entity.LastName">
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+                  <div class="btn-group-sm pb-3 pt-3">
+                     <button class="btn btn-sm btn-primary" ng-click="vm.save(vm.Entity)">Αποθήκευση</button>
+                  </div>
+                  <table class="table d-none d-md-table pt-2">
+                     <thead>
+                        <tr>
+                           <th scope="col">Όνομα</th>
+                           <th scope="col">Επίθετο</th>
+                           <th scope="col">Ενέργειες</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="driver in vm.Drivers">
+                           <td>{{driver.FirstName}}</td>
+                           <td>{{driver.LastName}}</td>
+                           <td>
+                              <div class="row">
+                                 <div class="col-sm-12 p-1">
+                                    <button class="btn btn-sm btn-primary" ng-click="vm.editDriver(driver)">Επεξεργασία</button>
+                                    <button class="btn btn-sm btn-danger pt" ng-click="vm.removeDriver(driver.Id)">Διαγραφή</button>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
                </div>
                <div ng-switch-when="profile">
                   <h2>Το Προφίλ μου</h2>
@@ -281,19 +321,15 @@
                </div>
             </div>
          </main>
-         <script>
-            function toggleSidebar() {
-                const sidebar = document.querySelector('.sidebar');
-                sidebar.classList.toggle('collapsed');
-            }
-         </script>
       </div>
       <!--Main layout-->
       <!-- AngularJS -->
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
       <script src="app.js"></script>
-      <script src="DashboardController.js"></script>
-      <script src="ItinerariesController.js"></script>
+      <script src="Controllers/DashboardController.js"></script>
+      <script src="Controllers/ItinerariesListController.js"></script>
+      <script src="Controllers/AddItineraryController.js"></script>
+      <script src="Controllers/DriverController.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
