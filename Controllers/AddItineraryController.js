@@ -91,19 +91,6 @@ app.controller('AddItineraryController', function($scope,$window) {
         alert('Παρακαλω συμπληρώστε όλα τα πεδία')
         return;
       }
-      
-      if(entity.Id != null){
-        const ref = firebase.database().ref('Itineraries/' + entity.Id);
-        delete entity.$$hashKey;
-
-        ref.set(entity)
-        .then(() => {
-          alert('Η επεξεργασία ήταν επιτυχής!');
-          initializeData();
-        })
-        .catch(err => alert('Η επεξεργασία απέτυχε' + err.message));
-        return;
-      }
 
       database.ref('Itineraries')
               .push(entity)

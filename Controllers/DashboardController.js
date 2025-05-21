@@ -49,14 +49,12 @@ app.controller('DashboardController', function($scope,$location) {
 			IsActive:false,
 			Icon:"fa-user",
 			Path:"profile"
-		}
-	
-	]
+		}]
 
 	vm.Menu=vm.Menu.filter(function(item){
 		return item.IsActive==true;
 	})
-	
+
 	vm.currentPage='dashboard';
 	vm.setPage=function(page){
 		vm.currentPage = page;

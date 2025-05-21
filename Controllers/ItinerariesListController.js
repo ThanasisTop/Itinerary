@@ -62,9 +62,9 @@ app.controller('ItinerariesListController', function($scope,$window) {
     {
       Code: "3",
       Description: "Απευθείας Κράτηση"
-    },
-  ];
+    },];
     vm.showSpinner=true;
+
     database.ref('Itineraries').once('value').then(function(snapshot) {
         const data = snapshot.val();
         vm.Itineraries = [];
@@ -77,6 +77,7 @@ app.controller('ItinerariesListController', function($scope,$window) {
 
           }
         }
+        vm.Itineraries.reverse();
         vm.showSpinner=false;
         $scope.$apply();
     });
@@ -118,10 +119,9 @@ app.controller('ItinerariesListController', function($scope,$window) {
         .catch(err => alert('Η επεξεργασία απέτυχε' + err.message));
         return;
       }
-	  else{
-		  return alert('Δεν υπαρχει το Δρομολόγιο')
-	  }
-      
+	    else{
+		    return alert('Δεν υπαρχει το Δρομολόγιο')
+	    }
       
   }
 
