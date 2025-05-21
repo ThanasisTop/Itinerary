@@ -104,6 +104,7 @@ body {
     text-align: center;
     padding: 1rem !important;
     margin: 4px 8px;
+    width: var(--sidebar-width-collapsed);
 }
 
     .collapsed .sidebar-link i {
