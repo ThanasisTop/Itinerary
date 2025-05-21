@@ -167,6 +167,7 @@ app.controller('ItinerariesListController', function($scope,$window) {
     search.ItineraryTypeCode="";
     search.AmountIsPaid="";
     search.TripNumber="";
+    search.Driver="";
   }
 
   vm.cancel=function() {
