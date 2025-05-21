@@ -83,7 +83,6 @@ app.controller('AddItineraryController', function($scope,$window) {
         $scope.$apply();
     });
 
-    console.log(vm.Drivers)
   };
   initializeData();
 
