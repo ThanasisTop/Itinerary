@@ -21,16 +21,16 @@ app.controller('DashboardController', function($scope,$location) {
 			Path:"dashboard"
 		},
 		{
-			Title:"Τα Δρομολόγιά μου",
-			Url:"./itineraries.html",
-			Icon:"fa-car",
-			Path:"my-itineraries"
-		},
-		{
 			Title:"Προσθήκη Δρομολογίου",
 			Url:"./add-itinerary.html",
 			Icon:"fa-plus",
 			Path:"add-itinerary"
+		},
+		{
+			Title:"Τα Δρομολόγιά μου",
+			Url:"./itineraries.html",
+			Icon:"fa-car",
+			Path:"my-itineraries"
 		},
 		{
 			Title:"Ημερολόγιο",
