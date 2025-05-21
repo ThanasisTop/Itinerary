@@ -26,9 +26,10 @@ app.controller('AddItineraryController', function($scope,$window) {
       TripDate: null,
       CarTypeCode:null,
       ItineraryTypeCode:null,
-      AmountIsPaid:null
+      AmountIsPaid:null,
+      Driver:null
     };
-    vm.Criteria=angular.copy(vm.Entity);
+    
     vm.Itineraries = [];
     
     vm.CarTypes=[
@@ -63,9 +64,26 @@ app.controller('AddItineraryController', function($scope,$window) {
     {
       Code: "3",
       Description: "Απευθείας Κράτηση"
-    },
-  ];
+    },];
     
+    vm.Drivers=[];
+
+    database.ref('Drivers').once('value').then(function(snapshot) {
+        const data = snapshot.val();
+
+        for (let key in data) {
+          if (data.hasOwnProperty(key)) {
+            let item = data[key];
+            item.Id = key;
+            vm.Drivers.push(item);
+
+          }
+        }
+        vm.showSpinner=false;
+        $scope.$apply();
+    });
+
+    console.log(vm.Drivers)
   };
   initializeData();
 
@@ -74,7 +92,7 @@ app.controller('AddItineraryController', function($scope,$window) {
         alert('Παρακαλω συμπληρώστε όλα τα πεδία')
         return;
       }
-
+      console.log(entity)
       if(entity.Id != null){
         const ref = firebase.database().ref('Itineraries/' + entity.Id);
         delete entity.$$hashKey;
@@ -106,6 +124,7 @@ app.controller('AddItineraryController', function($scope,$window) {
             entity.TripNumber == null ||
             entity.TripDate == null ||
             entity.CarTypeCode == null ||
-            entity.ItineraryTypeCode ==null ;
+            entity.ItineraryTypeCode ==null||
+            entity.Driver==null;
   }
 });

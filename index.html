@@ -92,6 +92,13 @@
                                     aria-label="Ναι/Οχι">
                                  </select>
                               </div>
+                              <div class="col-sm-6">
+                                 <label>Οδηγός</label>
+                                 <select class="form-select"
+                                    data-ng-model="vm.Entity.Driver"
+                                    data-ng-options="driver.FirstName+' '+driver.LastName as driver.FirstName+' '+driver.LastName for driver in vm.Drivers">
+                                 </select>
+                              </div>
                               <div class="col-sm-12">
                                  <label>Σχόλια</label>
                                  <textarea type="text" class="form-control" rows="4" placeholder="Σχόλια" ng-model="vm.Entity.Comments"></textarea>
@@ -107,7 +114,7 @@
                   <div>
                      <div class="col-sm-12">
                         <div class="row">
-                           <div class="col-sm-4">
+                           <div class="col-sm-3">
                               <label>Τύπος Δρομολογίου</label>
                               <select class="form-select"
                                  data-ng-model="search.ItineraryTypeCode"
@@ -115,7 +122,7 @@
                                  aria-label="Τύπος Δρομολογίου">
                               </select>
                            </div>
-                           <div class="col-sm-4">
+                           <div class="col-sm-3">
                               <label>Πληρωμή</label>
                               <select class="form-select"
                                  data-ng-model="search.AmountIsPaid"
@@ -123,9 +130,17 @@
                                  aria-label="Εγινε Πληρωμή">
                               </select>
                            </div>
-                           <div class="col-sm-4">
+                           <div class="col-sm-3">
                               <label>Αριθμός Δρομολογίου</label>
                               <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="search.TripNumber">
+                           </div>
+                           <div class="col-sm-3">
+                              <label>Οδηγός</label>
+                              <select class="form-select"
+                                 data-ng-model="search.Driver"
+                                 data-ng-options="driver.FirstName+' '+driver.LastName as driver.FirstName+' '+driver.LastName for driver in vm.Drivers"
+                                 aria-label="Οδηγός">
+                              </select>
                            </div>
                         </div>
                      </div>
@@ -138,6 +153,7 @@
                         <tr>
                            <th scope="col">Τύπος Δρομολογίου</th>
                            <th scope="col">Αριθμός Δρομολογίου</th>
+                           <th scope="col">Οδηγός</th>
                            <th scope="col">Ημερομηνία</th>
                            <th scope="col">Ποσό</th>
                            <th scope="col">Πληρωμή</th>
@@ -154,6 +170,7 @@
                               </select>
                            </td>
                            <td>{{itinerary.TripNumber}}</td>
+                           <td>{{itinerary.Driver}}</td>
                            <td>{{itinerary.TripDate}}</td>
                            <td ng-style="{'color': itinerary.AmountIsPaid=='1' ? 'green' : 'red'}">{{itinerary.Amount|currency: "€"}}</td>
                            <td><select class="form-select"
@@ -175,6 +192,7 @@
                         </tr>
                         <tr>
                            <th scope="row">Σύνολο</th>
+                           <td></td>
                            <td></td>
                            <td></td>
                            <td ng-style="{'color': search.AmountIsPaid=='1' ? 'green' : 'black'}">{{vm.getTotal(filteredItineraries)|currency: "€"}}</td>
@@ -255,6 +273,13 @@
                                  aria-label="Ναι/Οχι">
                               </select>
                            </div>
+                           <div class="col-sm-6">
+                              <label>Οδηγός</label>
+                              <select class="form-select"
+                                 data-ng-model="vm.Entity.Driver"
+                                 data-ng-options="driver.FirstName+' '+driver.LastName as driver.FirstName+' '+driver.LastName for driver in vm.Drivers">
+                              </select>
+                           </div>
                            <div class="col-sm-12">
                               <label>Σχόλια</label>
                               <textarea type="text" class="form-control" rows="4" placeholder="Σχόλια" ng-model="vm.Entity.Comments"></textarea>
@@ -287,10 +312,11 @@
                            </div>
                         </div>
                      </div>
+                     <div class="btn-group-sm pb-3 pt-3">
+                        <button class="btn btn-sm btn-primary" type="submit">Αποθήκευση</button>
+                        <button class="btn btn-sm btn-danger pt" ng-click="vm.cancel()" ng-if="vm.Entity.Id">Ακύρωση</button>
+                     </div>
                   </form>
-                  <div class="btn-group-sm pb-3 pt-3">
-                     <button class="btn btn-sm btn-primary" ng-click="vm.save(vm.Entity)">Αποθήκευση</button>
-                  </div>
                   <table class="table d-none d-md-table pt-2">
                      <thead>
                         <tr>
@@ -327,6 +353,11 @@
                         </div>
                      </li>
                   </ol>
+                  <div ng-show="vm.showSpinner" class="d-flex justify-content-center">
+                     <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                     </div>
+                  </div>
                </div>
                <div ng-switch-when="profile">
                   <h2>Το Προφίλ μου</h2>

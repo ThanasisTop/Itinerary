@@ -28,7 +28,6 @@ app.controller('ItinerariesListController', function($scope,$window) {
       ItineraryTypeCode:null,
       AmountIsPaid:null
     };
-    vm.Criteria=angular.copy(vm.Entity);
     vm.Itineraries = [];
     
     vm.CarTypes=[
@@ -67,7 +66,6 @@ app.controller('ItinerariesListController', function($scope,$window) {
   ];
     vm.showSpinner=true;
     database.ref('Itineraries').once('value').then(function(snapshot) {
-        
         const data = snapshot.val();
         vm.Itineraries = [];
 
@@ -81,7 +79,23 @@ app.controller('ItinerariesListController', function($scope,$window) {
         }
         vm.showSpinner=false;
         $scope.$apply();
-        
+    });
+
+    vm.Drivers=[];
+
+    database.ref('Drivers').once('value').then(function(snapshot) {
+        const data = snapshot.val();
+
+        for (let key in data) {
+          if (data.hasOwnProperty(key)) {
+            let item = data[key];
+            item.Id = key;
+            vm.Drivers.push(item);
+
+          }
+        }
+        vm.showSpinner=false;
+        $scope.$apply();
     });
   };
   initializeData();
@@ -136,7 +150,8 @@ app.controller('ItinerariesListController', function($scope,$window) {
             entity.TripNumber == null ||
             entity.TripDate == null ||
             entity.CarTypeCode == null ||
-            entity.ItineraryTypeCode ==null ;
+            entity.ItineraryTypeCode ==null ||
+            entity.Driver==null;
   }
 
   vm.getTotal=function(filteredItineraries){
@@ -162,7 +177,8 @@ app.controller('ItinerariesListController', function($scope,$window) {
       TripDate: null,
       CarTypeCode:null,
       ItineraryTypeCode:null,
-      AmountIsPaid:null
+      AmountIsPaid:null,
+      Driver:null
     };
   }
 
