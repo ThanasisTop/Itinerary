@@ -16,42 +16,47 @@ app.controller('DashboardController', function($scope,$location) {
 	vm.Menu=[
 		{
 			Title:"Main Dashboard",
-			Url:"./dashboard.html",
+			IsActive:true,
 			Icon:"fa-home",
 			Path:"dashboard"
 		},
 		{
 			Title:"Προσθήκη Δρομολογίου",
-			Url:"./add-itinerary.html",
+			IsActive:true,
 			Icon:"fa-plus",
 			Path:"add-itinerary"
 		},
 		{
 			Title:"Τα Δρομολόγιά μου",
-			Url:"./itineraries.html",
+			IsActive:true,
 			Icon:"fa-car",
 			Path:"my-itineraries"
 		},
 		{
 			Title:"Ημερολόγιο",
-			Url:"./calendar.html",
+			IsActive:false,
 			Icon:"fa-calendar",
 			Path:"calendar"
 		},
 		{
 			Title:"Οδηγοί",
-			Url:"./drivers.html",
+			IsActive:true,
 			Icon:"fa-users",
 			Path:"drivers"
 		},
 		{
 			Title:"Το Προφίλ μου",
-			Url:"./profile.html",
+			IsActive:false,
 			Icon:"fa-user",
 			Path:"profile"
 		}
 	
 	]
+
+	vm.Menu=vm.Menu.filter(function(item){
+		return item.IsActive==true;
+	})
+	
 	vm.currentPage='dashboard';
 	vm.setPage=function(page){
 		vm.currentPage = page;
