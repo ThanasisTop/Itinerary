@@ -111,41 +111,50 @@
                         </div>
                      </form>
                   </div>
-                  <div>
+                  <div class="pb-2">
+
+                     <div class="form-check form-switch">
+                        <label class="form-check-label" for="flexSwitchCheckDefault"><h5>Φίλτρα</h5></label>
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ng-model="vm.filter">
+                     </div>
                      <div class="col-sm-12">
-                        <div class="row">
-                           <div class="col-sm-3">
-                              <label>Τύπος Δρομολογίου</label>
-                              <select class="form-select"
-                                 data-ng-model="search.ItineraryTypeCode"
-                                 data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
-                                 aria-label="Τύπος Δρομολογίου">
-                              </select>
-                           </div>
-                           <div class="col-sm-3">
-                              <label>Πληρωμή</label>
-                              <select class="form-select"
-                                 data-ng-model="search.AmountIsPaid"
-                                 data-ng-options="type.Code as type.Description for type in vm.YesNo"
-                                 aria-label="Εγινε Πληρωμή">
-                              </select>
-                           </div>
-                           <div class="col-sm-3">
-                              <label>Αριθμός Δρομολογίου</label>
-                              <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="search.TripNumber">
-                           </div>
-                           <div class="col-sm-3">
-                              <label>Οδηγός</label>
-                              <select class="form-select"
-                                 data-ng-model="search.Driver"
-                                 data-ng-options="driver.FirstName+' '+driver.LastName as driver.FirstName+' '+driver.LastName for driver in vm.Drivers"
-                                 aria-label="Οδηγός">
-                              </select>
+                        <div class="card">
+                           <div class="card-body" ng-if="vm.filter">
+                              <div class="row">
+                                 <div class="col-sm-3">
+                                    <label>Τύπος Δρομολογίου</label>
+                                    <select class="form-select"
+                                       data-ng-model="search.ItineraryTypeCode"
+                                       data-ng-options="type.Code as type.Description for type in vm.ItineraryTypes"
+                                       aria-label="Τύπος Δρομολογίου">
+                                    </select>
+                                 </div>
+                                 <div class="col-sm-3">
+                                    <label>Πληρωμή</label>
+                                    <select class="form-select"
+                                       data-ng-model="search.AmountIsPaid"
+                                       data-ng-options="type.Code as type.Description for type in vm.YesNo"
+                                       aria-label="Εγινε Πληρωμή">
+                                    </select>
+                                 </div>
+                                 <div class="col-sm-3">
+                                    <label>Αριθμός Δρομολογίου</label>
+                                    <input type="text" class="form-control" placeholder="Αριθμός Δρομολογίου" ng-model="search.TripNumber">
+                                 </div>
+                                 <div class="col-sm-3">
+                                    <label>Οδηγός</label>
+                                    <select class="form-select"
+                                       data-ng-model="search.Driver"
+                                       data-ng-options="driver.FirstName+' '+driver.LastName as driver.FirstName+' '+driver.LastName for driver in vm.Drivers"
+                                       aria-label="Οδηγός">
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="btn-group-sm pt-2">
+                                 <button class="btn btn-primary" ng-click="vm.clearFilter(search)">Καθαρισμός</button>
+                              </div>
                            </div>
                         </div>
-                     </div>
-                     <div class="btn-group-sm pt-2">
-                        <button class="btn btn-primary" ng-click="vm.clearFilter(search)">Καθαρισμός</button>
                      </div>
                   </div>
                   <table class="table d-none d-md-table pt-2">
