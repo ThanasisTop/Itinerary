@@ -112,14 +112,13 @@
                      </form>
                   </div>
                   <div class="pb-2">
-
                      <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault"><h5>Φίλτρα</h5></label>
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ng-model="vm.filter">
                      </div>
                      <div class="col-sm-12">
                         <div class="card">
-                           <div class="card-body" ng-if="vm.filter">
+                           <div class="card-body" ng-show="vm.filter">
                               <div class="row">
                                  <div class="col-sm-3">
                                     <label>Τύπος Δρομολογίου</label>
