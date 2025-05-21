@@ -91,7 +91,7 @@ app.controller('AddItineraryController', function($scope,$window) {
         alert('Παρακαλω συμπληρώστε όλα τα πεδία')
         return;
       }
-      console.log(entity)
+      
       if(entity.Id != null){
         const ref = firebase.database().ref('Itineraries/' + entity.Id);
         delete entity.$$hashKey;
