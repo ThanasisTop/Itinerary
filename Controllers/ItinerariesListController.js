@@ -52,9 +52,13 @@ app.controller('ItinerariesListController', function($scope,$window,FirebaseServ
 	
     vm.showSpinner=true;
 	
+	vm.currentPage = 0;
+	vm.pageSize = 5;
+	
 	FirebaseService.getArray('Itineraries',[])
 				   .then(function(result){
 					   vm.Itineraries=result.reverse();
+					   vm.numberOfPages=Math.ceil(vm.Itineraries.length / vm.pageSize);
 					   vm.showSpinner=false;
 				   });
 	
@@ -63,6 +67,8 @@ app.controller('ItinerariesListController', function($scope,$window,FirebaseServ
 					   vm.Drivers=result;
 					   vm.showSpinner=false;
 				   });
+				   
+				   
   };
   initializeData();
 

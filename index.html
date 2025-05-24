@@ -169,7 +169,8 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
+                        <tr ng-repeat="itinerary in filteredItineraries = 
+                        (vm.Itineraries.slice(vm.currentPage * vm.pageSize, (vm.currentPage + 1) * vm.pageSize) | filter:search)">
                            <td>
                               <select class="form-select"
                                  data-ng-model="itinerary.ItineraryTypeCode"
@@ -209,8 +210,8 @@
                         </tr>
                      </tbody>
                   </table>
-                  <ol class="list-group list-group pt-5 d-block d-md-none">
-                     <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="itinerary in filteredItineraries = (vm.Itineraries | filter:search)">
+                  <ol class="list-group list-group pt-5 pb-5 d-block d-md-none">
+                     <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="itinerary in filteredItineraries = (vm.Itineraries.slice(vm.currentPage * vm.pageSize, (vm.currentPage + 1) * vm.pageSize)  | filter:search)">
                         <div class="ms-2 me-auto">
                            <div class="fw-bold">{{itinerary.TripNumber}}</div>
                            <div>Ημερομηνία: {{itinerary.TripDate}}</div>
@@ -226,6 +227,19 @@
                         </div>
                      </li>
                   </ol>
+                  <div class="gap-2 col-sm-3 mx-auto">
+                     <button class="btn btn-sm btn-primary" 
+                             ng-disabled="vm.currentPage == 0" 
+                             ng-click="vm.currentPage = vm.currentPage - 1">
+                         ‹‹
+                     </button>
+                     <span> Page {{ vm.currentPage + 1 }} of {{vm.numberOfPages}} </span>
+                     <button class="btn btn-sm btn-primary" 
+                             ng-disabled="vm.currentPage >= vm.numberOfPages - 1" 
+                             ng-click="vm.currentPage = vm.currentPage + 1">
+                             ››
+                     </button>
+                  </div>
                   <div ng-show="vm.showSpinner" class="d-flex justify-content-center">
                      <div class="spinner-border" role="status">
                         <span class="sr-only">Loading...</span>
