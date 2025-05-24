@@ -66,17 +66,19 @@ app.controller('AddItineraryController', function($scope, $window, FirebaseServi
         alert('Παρακαλω συμπληρώστε όλα τα πεδία')
         return;
       }
-
-      FirebaseService.save('Itineraries',entity)
-      .then(() => {
-                alert('Επιτυχής αποθήκευση')
-				initializeData()
-      },err => {
-                alert('Αποτυχία αποθήκευσης')
-                console.log(err)
-      })
-      return;
       
+	  FirebaseService.save('Itineraries',entity).then(success,failure);
+	  
+	  function success(){
+		  alert('Επιτυχής αποθήκευση')
+		  initializeData()
+	  }
+	  function failure(err){
+		  alert('Αποτυχία αποθήκευσης')
+          console.log(err)
+	  }
+	  
+      return;
   }
 
   vm.hasEmptyField=function (entity) {

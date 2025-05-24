@@ -72,19 +72,23 @@ app.controller('ItinerariesListController', function($scope,$window,FirebaseServ
         return;
       }
 
-      if(entity.Id != null){
-        FirebaseService.update('Itineraries',entity)
-        .then(() => {
-					alert('Η επεξεργασία ήταν επιτυχής!');
-					initializeData();
-        },err => {
-				  alert('Η επεξεργασία απέτυχε' + err.message)
-				  console.log(err)
-		})
+      if(entity.Id != null)
+	  {
+        FirebaseService.update('Itineraries',entity).then(success,failure)
+		
+		function success(){
+			alert('Η επεξεργασία ήταν επιτυχής!');
+			initializeData();
+		}
+		function failure(){
+			alert('Η επεξεργασία απέτυχε' + err.message)
+			console.log(err)
+		}
         return;
       }
-	  else{
-		    return alert('Δεν υπαρχει το Δρομολόγιο')
+	  else
+	  {
+		return alert('Δεν υπαρχει το Δρομολόγιο')
 	  }
       
   }
@@ -92,14 +96,18 @@ app.controller('ItinerariesListController', function($scope,$window,FirebaseServ
   vm.removeItinerary = function (id) {
     if (!confirm('Έιστε σίγουρος οτι θέλετε να διαγράψετε το δρομολόγιο;')) return;
 
-    FirebaseService.remove('Itineraries',id)
-      .then(() => {
-        alert('Επιτυχής διαγραφή');
-        initializeData()
-      })
-      .catch(err => {
-        alert('Η διαγραφή απέτυχε!: ' + err.message);
-      });
+    FirebaseService.remove('Itineraries',id).then(success,failure);
+	  
+	function success()
+	{
+	  alert('Επιτυχής διαγραφή');
+      initializeData()
+	}
+	function failure(err)
+	{
+	  alert('Η διαγραφή απέτυχε!: ' + err.message);
+	  console.log(err)
+	}
   };
 
 

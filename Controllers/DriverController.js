@@ -24,14 +24,16 @@ app.controller('DriverController', function($scope, $location, FirebaseService) 
 	vm.removeDriver=function(id){
 		if (!confirm('Έιστε σίγουρος οτι θέλετε να διαγράψετε τον Οδηγό;')) return;
 
-        FirebaseService.remove('Drivers',id)
-	     			   .then(() => {
-	     					alert('Επιτυχής διαγραφή');
-	     					initializeData()
-	     				})
-	     				.catch(err => {
-	     					alert('Η διαγραφή απέτυχε!: ' + err.message);
-	     				});
+        FirebaseService.remove('Drivers',id).then(success,failure);
+		
+		function success(){
+			alert('Επιτυχής διαγραφή');
+	     	initializeData()
+		}
+		function failure(err){
+			alert('Η διαγραφή απέτυχε!: ' + err.message);
+			console.log(err)
+		}
 	}
 
 	vm.cancel=function() {
@@ -42,32 +44,39 @@ app.controller('DriverController', function($scope, $location, FirebaseService) 
   }
 	
 	vm.save=function(entity){
-	  if(vm.hasEmptyField(entity)){
-	  	alert('Παρακαλω συμπληρώστε όλα τα πεδία')
-	  	return;
+	  if(vm.hasEmptyField(entity))
+	  {
+	  	return alert('Παρακαλω συμπληρώστε όλα τα πεδία');
 	  }
 
-      if(entity.Id !=null){
-		  FirebaseService.update('Drivers',entity)
-		  .then(() => {
-					alert('Η επεξεργασία ήταν επιτυχής')
-					initializeData()
-		  },err => {
-					alert('Αποτυχία αποθήκευσης')
-					console.log(err)
-		  })
-		  return;
+      if(entity.Id !=null)
+	  {
+		FirebaseService.update('Drivers',entity)
+		.then(success,failure)
+		
+		function success(){
+		  alert('Η επεξεργασία ήταν επιτυχής')
+		  initializeData()
+		}
+		function failure(err){
+		  alert('Αποτυχία επεξεργασίας')
+		  console.log(err)
+		}
+		return;
 	  }
 	  
-      FirebaseService.save('Drivers',entity)
-      .then(() => {
-                alert('Επιτυχής αποθήκευση')
-				initializeData()
-      },err => {
-                alert('Αποτυχία αποθήκευσης')
-                console.log(err)
-      })
-      return;
+      FirebaseService.save('Drivers',entity).then(success,failure)
+	  
+	  function success()
+	  {
+		alert('Επιτυχής αποθήκευση')
+		initializeData()
+	  }
+	  function failure(err)
+	  {
+		alert('Αποτυχία αποθήκευσης')
+		console.log(err)
+	  }
 	}
 	
 	vm.hasEmptyField=function (entity) {
