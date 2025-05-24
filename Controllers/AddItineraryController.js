@@ -1,38 +1,8 @@
-app.controller('AddItineraryController', function($scope,$window) {
+app.controller('AddItineraryController', function($scope, $window, FirebaseService) {
     var vm=this;
-    
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBltVRsaUfSqZgvzN9IBUwiaBwRSPhv1Ho",
-    authDomain: "creteairporttaxiitineraries.firebaseapp.com",
-    databaseURL: "https://creteairporttaxiitineraries-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "creteairporttaxiitineraries",
-    storageBucket: "creteairporttaxiitineraries.firebasestorage.app",
-    messagingSenderId: "98532459774",
-    appId: "1:98532459774:web:73158b15a36531a97791af",
-    measurementId: "G-ZQFXH48XCW"
-  }
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  // Initialize Realtime Database
-  const database = firebase.database();
   
-  function initializeData() {
-    vm.Entity = {
-      Amount: null,
-      Comments: null,
-      TripNumber: null,
-      TripDate: null,
-      CarTypeCode:null,
-      ItineraryTypeCode:null,
-      AmountIsPaid:null,
-      Driver:null
-    };
-    
-    vm.Itineraries = [];
-    
-    vm.CarTypes=[
+  function initializeLookUps(){
+	vm.CarTypes=[
     {
       Code: "1",
       Description: "Limo"
@@ -64,24 +34,29 @@ app.controller('AddItineraryController', function($scope,$window) {
     {
       Code: "3",
       Description: "Απευθείας Κράτηση"
-    },];
+    }];
+  }
+  
+  function initializeData() {
+    vm.Entity = {
+      Amount: null,
+      Comments: null,
+      TripNumber: null,
+      TripDate: null,
+      CarTypeCode:null,
+      ItineraryTypeCode:null,
+      AmountIsPaid:null,
+      Driver:null
+    };
     
-    vm.Drivers=[];
-
-    database.ref('Drivers').once('value').then(function(snapshot) {
-        const data = snapshot.val();
-
-        for (let key in data) {
-          if (data.hasOwnProperty(key)) {
-            let item = data[key];
-            item.Id = key;
-            vm.Drivers.push(item);
-
-          }
-        }
-        vm.showSpinner=false;
-        $scope.$apply();
-    });
+    initializeLookUps();
+   
+    
+	FirebaseService.getArray('Drivers',[])
+				   .then(function(result){
+					   vm.Drivers=result;
+				   });
+    
 
   };
   initializeData();
@@ -92,11 +67,10 @@ app.controller('AddItineraryController', function($scope,$window) {
         return;
       }
 
-      database.ref('Itineraries')
-              .push(entity)
-              .then(() => {
+      FirebaseService.save('Itineraries',entity)
+      .then(() => {
                 alert('Επιτυχής αποθήκευση')
-        initializeData()
+				initializeData()
       },err => {
                 alert('Αποτυχία αποθήκευσης')
                 console.log(err)
