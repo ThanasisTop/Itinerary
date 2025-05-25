@@ -1,4 +1,4 @@
-app.controller('DriverController', function($scope, $location, FirebaseService) {
+app.controller('DriverController', function($scope, $location, FirebaseService, ReusableService) {
   var vm=this;
 
 	function initializeData(){
@@ -7,11 +7,15 @@ app.controller('DriverController', function($scope, $location, FirebaseService) 
 			FirstName:null,
 			LastName:null
 		};
-
+		
+		vm.currentPage=0;
+		vm.pageSize=5;
+		
 		vm.showSpinner=true;
 		FirebaseService.getArray('Drivers',[])
 					   .then(function(result){
 							vm.Drivers=result;
+							vm.numberOfPages=ReusableService.initializePaging(vm.Drivers,vm.currentPage,vm.pageSize);
 							vm.showSpinner=false;
 						});
 	}

@@ -260,7 +260,8 @@
                               <label>Ημερομηνία</label>
                               <input type="text" class="form-control" placeholder="DD/MM/YYYY" 
                                  ng-model="vm.Entity.TripDate"
-                                 ng-pattern="/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/">
+                                 ng-change="vm.dateFormat(vm.Entity.TripDate)"
+                                 maxlength="10">
                            </div>
                         </div>
                         <div class="row">
@@ -348,7 +349,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr ng-repeat="driver in vm.Drivers">
+                        <tr ng-repeat="driver in vm.Drivers.slice(vm.currentPage * vm.pageSize, (vm.currentPage + 1) * vm.pageSize)">
                            <td>{{driver.FirstName}}</td>
                            <td>{{driver.LastName}}</td>
                            <td>
@@ -363,7 +364,7 @@
                      </tbody>
                   </table>
                   <ol class="list-group list-group pt-5 d-block d-md-none">
-                     <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="driver in filteredDrivers = (vm.Drivers | filter:search)">
+                     <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="driver in filteredDrivers = (vm.Drivers.slice(vm.currentPage * vm.pageSize, (vm.currentPage + 1) * vm.pageSize) | filter:search)">
                         <div class="ms-2 me-auto">
                            <div>{{driver.FirstName}} {{driver.LastName}}</div>
                            <div class="row">
@@ -375,6 +376,19 @@
                         </div>
                      </li>
                   </ol>
+                  <div class="gap-2 col-sm-3 mx-auto">
+                     <button class="btn btn-sm btn-primary" 
+                             ng-disabled="vm.currentPage == 0" 
+                             ng-click="vm.currentPage = vm.currentPage - 1">
+                         ‹‹
+                     </button>
+                     <span> Page {{ vm.currentPage + 1 }} of {{vm.numberOfPages}} </span>
+                     <button class="btn btn-sm btn-primary" 
+                             ng-disabled="vm.currentPage >= vm.numberOfPages - 1" 
+                             ng-click="vm.currentPage = vm.currentPage + 1">
+                             ››
+                     </button>
+                  </div>
                   <div ng-show="vm.showSpinner" class="d-flex justify-content-center">
                      <div class="spinner-border" role="status">
                         <span class="sr-only">Loading...</span>
@@ -397,6 +411,7 @@
       <script src="Controllers/AddItineraryController.js"></script>
       <script src="Controllers/DriverController.js"></script>
       <script src="Services/FirebaseService.js"></script>
+      <script src="Services/ReusableService.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>

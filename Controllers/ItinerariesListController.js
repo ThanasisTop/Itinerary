@@ -1,4 +1,4 @@
-app.controller('ItinerariesListController', function($scope,$window,FirebaseService) {
+app.controller('ItinerariesListController', function($scope,$window,FirebaseService, ReusableService) {
   var vm=this;
   function initializeLookUps(){
 	vm.CarTypes=[
@@ -37,6 +37,12 @@ app.controller('ItinerariesListController', function($scope,$window,FirebaseServ
     
   }
   
+  // function initializePaging(entityList){
+	  // vm.currentPage = 0;
+	  // vm.pageSize = 5;
+	  // vm.numberOfPages=Math.ceil(entityList.length / vm.pageSize);
+  // }
+  
   function initializeData() {
     vm.Entity = {
       Amount: null,
@@ -51,14 +57,13 @@ app.controller('ItinerariesListController', function($scope,$window,FirebaseServ
     initializeLookUps();
 	
     vm.showSpinner=true;
-	
 	vm.currentPage = 0;
 	vm.pageSize = 5;
-	
+	  
 	FirebaseService.getArray('Itineraries',[])
 				   .then(function(result){
 					   vm.Itineraries=result.reverse();
-					   vm.numberOfPages=Math.ceil(vm.Itineraries.length / vm.pageSize);
+					   vm.numberOfPages=ReusableService.initializePaging(vm.Itineraries,vm.currentPage,vm.pageSize);
 					   vm.showSpinner=false;
 				   });
 	

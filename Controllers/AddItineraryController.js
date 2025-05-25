@@ -80,6 +80,25 @@ app.controller('AddItineraryController', function($scope, $window, FirebaseServi
 	  
       return;
   }
+  
+  vm.dateFormat=function(date){
+	  
+	  if(date.length>=2 && date.length<=3){
+		  const day = date.substring(0, 2);
+		  vm.Entity.TripDate = `${day}/`;
+	  }
+	  else if(date.length>4 && date.length<=5){
+		  const day = date.substring(0, 2);
+	      const month = date.substring(3, 5);
+		  vm.Entity.TripDate = `${day}/${month}/`;
+	  }
+	  else if(date.length>5 && date.length<=10){
+		  const day = date.substring(0, 2);
+	      const month = date.substring(3, 5);
+		  const year = date.substring(6, 10);
+		  vm.Entity.TripDate = `${day}/${month}/${year}`;
+	  }
+  }
 
   vm.hasEmptyField=function (entity) {
       return entity.Amount == null ||
